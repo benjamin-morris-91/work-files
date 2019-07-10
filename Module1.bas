@@ -1,175 +1,196 @@
 Attribute VB_Name = "Module1"
-Option Explicit
-'Testing of the online editing ability.
+Sub CalculateRecordingCosts()
 
-Public Sub ExportModules()
-    Dim bExport As Boolean
-    Dim wkbSource As Excel.Workbook
-    Dim szSourceWorkbook As String
-    Dim szExportPath As String
-    Dim szFileName As String
-    Dim cmpComponent As VBIDE.VBComponent
+Dim county As String
+Dim number As Integer
+Dim i As Integer
+Dim j As Integer
+Dim numberOfEntities As Integer
+Dim Entity As String
+Dim recordingTotal As Integer
 
-    ''' The code modules will be exported in a folder named.
-    ''' VBAProjectFiles in the Documents folder.
-    ''' The code below create this folder if it not exist
-    ''' or delete all files in the folder if it exist.
-    If FolderWithVBAProjectFiles = "Error" Then
-        MsgBox "Export Folder not exist"
-        Exit Sub
-    End If
-    
-    On Error Resume Next
-        Kill FolderWithVBAProjectFiles & "\*.*"
-    On Error GoTo 0
+'county = InputBox("Enter the county")
+'number = InputBox("Enter the length of tax terms")
+'Worksheets("RecordingCosts").Range("F1").Value = county
+'Worksheets("RecordingCosts").Range("F2").Value = number
 
-    ''' NOTE: This workbook must be open in Excel.
-    szSourceWorkbook = ActiveWorkbook.Name
-    Set wkbSource = Application.Workbooks(szSourceWorkbook)
-    
-    If wkbSource.VBProject.Protection = 1 Then
-    MsgBox "The VBA in this workbook is protected," & _
-        "not possible to export the code"
-    Exit Sub
-    End If
-    
-    szExportPath = FolderWithVBAProjectFiles & "\"
-    
-    For Each cmpComponent In wkbSource.VBProject.VBComponents
-        
-        bExport = True
-        szFileName = cmpComponent.Name
-
-        ''' Concatenate the correct filename for export.
-        Select Case cmpComponent.Type
-            Case vbext_ct_ClassModule
-                szFileName = szFileName & ".cls"
-            Case vbext_ct_MSForm
-                szFileName = szFileName & ".frm"
-            Case vbext_ct_StdModule
-                szFileName = szFileName & ".bas"
-            Case vbext_ct_Document
-                ''' This is a worksheet or workbook object.
-                ''' Don't try to export.
-                bExport = False
-        End Select
-        
-        If bExport Then
-            ''' Export the component to a text file.
-            cmpComponent.Export szExportPath & szFileName
-            
-        ''' remove it from the project if you want
-        '''wkbSource.VBProject.VBComponents.Remove cmpComponent
-        
+For i = 1 To Range("NumberOfProperties")
+    numberOfEntities = 0
+    For j = 1 To 4
+        Entity = "Prop" & i & "TaxingEntity" & j
+        If Range(Entity).Value <> "0" Then
+            numberOfEntities = numberOfEntities + 1
         End If
-   
-    Next cmpComponent
+    Next j
+    Worksheets("RecordingCosts").Range("F4") = numberOfEntities
+    recordingTotal = recordingTotal + Worksheets("RecordingCosts").Range("F10")
+    
+Next i
+MsgBox recordingTotal
 
-    MsgBox "Export is ready"
 End Sub
 
+Sub AddB1FKA()
 
-Public Sub ImportModules()
-    Dim wkbTarget As Excel.Workbook
-    Dim objFSO As Scripting.FileSystemObject
-    Dim objFile As Scripting.File
-    Dim szTargetWorkbook As String
-    Dim szImportPath As String
-    Dim szFileName As String
-    Dim cmpComponents As VBIDE.VBComponents
+Range("CombinedB1FKA") = Range("Borrower1Name") & " fka " & Range("Borrower1FKA")
 
-    If ActiveWorkbook.Name = ThisWorkbook.Name Then
-        MsgBox "Select another destination workbook" & _
-        "Not possible to import in this workbook "
-        Exit Sub
-    End If
-
-    'Get the path to the folder with modules
-    If FolderWithVBAProjectFiles = "Error" Then
-        MsgBox "Import Folder not exist"
-        Exit Sub
-    End If
-
-    ''' NOTE: This workbook must be open in Excel.
-    szTargetWorkbook = ActiveWorkbook.Name
-    Set wkbTarget = Application.Workbooks(szTargetWorkbook)
-    
-    If wkbTarget.VBProject.Protection = 1 Then
-    MsgBox "The VBA in this workbook is protected," & _
-        "not possible to Import the code"
-    Exit Sub
-    End If
-
-    ''' NOTE: Path where the code modules are located.
-    szImportPath = FolderWithVBAProjectFiles & "\"
-        
-    Set objFSO = New Scripting.FileSystemObject
-    If objFSO.GetFolder(szImportPath).Files.Count = 0 Then
-       MsgBox "There are no files to import"
-       Exit Sub
-    End If
-
-    'Delete all modules/Userforms from the ActiveWorkbook
-    Call DeleteVBAModulesAndUserForms
-
-    Set cmpComponents = wkbTarget.VBProject.VBComponents
-    
-    ''' Import all the code modules in the specified path
-    ''' to the ActiveWorkbook.
-    For Each objFile In objFSO.GetFolder(szImportPath).Files
-    
-        If (objFSO.GetExtensionName(objFile.Name) = "cls") Or _
-            (objFSO.GetExtensionName(objFile.Name) = "frm") Or _
-            (objFSO.GetExtensionName(objFile.Name) = "bas") Then
-            cmpComponents.Import objFile.Path
-        End If
-        
-    Next objFile
-    
-    MsgBox "Import is ready"
 End Sub
 
-Function FolderWithVBAProjectFiles() As String
-    Dim WshShell As Object
-    Dim FSO As Object
-    Dim SpecialPath As String
+Sub AddB2FKA()
 
-    Set WshShell = CreateObject("WScript.Shell")
-    Set FSO = CreateObject("scripting.filesystemobject")
+Range("CombinedB2FKA") = Range("Borrower2Name") & " fka " & Range("Borrower2FKA")
 
-    SpecialPath = WshShell.SpecialFolders("MyDocuments")
+End Sub
 
-    If Right(SpecialPath, 1) <> "\" Then
-        SpecialPath = SpecialPath & "\"
+Sub AddB3FKA()
+
+Range("CombinedB3FKA") = Range("Borrower3Name") & " fka " & Range("Borrower3FKA")
+
+End Sub
+
+Sub LegalLoop()
+'set up for loop to pass through the legal description as a function, return false if any constraints fail, which fails this sub.
+Dim str As String
+
+Dim a As Boolean
+Dim x As Integer
+
+For x = 1 To Range("NumberOfProperties")
+    str = Range("Prop" & x & "Legal")
+    a = LegalWork(str)
+    If a = False Then
+        Exit For
     End If
+Next x
+Range("LegalCriteria") = a
+
+End Sub
+
+Public Function LegalWork(str As String) As Boolean
+'***************************************************
+'Checks to ensure users abides by Legal Description restraints.
+'Restraints: Legal 1 is <=3 lines and <=170 characters total.
+'Does NOT check if a users enters more than 56 characters on one line. Couldn't figure it out...
+'***************************************************
+Dim legalLength As Integer
+Dim lineLength As Integer
+
+'legalLength = Len(Range("Prop1Legal"))
+legalLength = Len(str)
+
+'lineLength = Worksheets("DropdownInfo").Range("B146")
+lineLength = Len(str) - Len(WorksheetFunction.Substitute(str, Chr(10), "")) + 1
+If legalLength > 170 Then
+    MsgBox "The length of the lines exceed the max allowed. Please make sure to have less than 170 characters and use the Exhabit A box for anything that exceeds 170 characters"
+    LegalWork = False
+    Exit Function
+ElseIf lineLength > 3 Then
+    MsgBox "The number of lines used exceeds the max allowed. Please make sure to place any lines after 3 in the exhibit A box"
+    LegalWork = False
+    Exit Function
+Else
+    LegalWork = True
+End If
+
+End Function
+
+Sub LogIssue() 'Adds the ability to log an issue with the program. This gets saved to the database file.
+
+Dim Wb2 As Workbook                     'Database Doc
+Dim newDatabase As Worksheet            'copying from main file
+Dim UpdateLog As Worksheet     'pasting into database file
+Dim inputSelection As Variant
+Dim str As String
+Dim nextSpot As Integer
+Dim strA As String
+Dim strB As String
+
+inputSelection = InputBox("Please enter the problem you encountered.")
+    If inputSelection <> "" Then 'Process of adding the entry to the log
     
-    If FSO.FolderExists(SpecialPath & "VBAProjectFiles") = False Then
-        On Error Resume Next
-        MkDir SpecialPath & "VBAProjectFiles"
-        On Error GoTo 0
+    ' ********************
+    ' Only emailing issue. Currently error in sending it to database file. Keeps overwritting the same cell...
+    ' ********************
+    
+    
+        Application.ScreenUpdating = False
+        Call assignFileNames
+        Application.ScreenUpdating = False
+
+        Set Wb2 = Workbooks.Open(databaseFile) 'This is the database file
+        Set UpdateLog = Worksheets("LogIssues")
+        
+        Worksheets("LogIssues").Activate
+        nextSpot = Application.WorksheetFunction.CountA(Columns(1)) + 1
+
+        strA = "A" & nextSpot
+        strB = "F" & nextSpot
+        str = Now() & " - " & Application.UserName
+        Worksheets("LogIssues").Range(strA) = str
+        Worksheets("LogIssues").Range(strB) = inputSelection
+        Worksheets("Sheet1").Activate
+        
+        Wb2.Close SaveChanges:=True
+        Set UpdateDatabaseFile = Nothing
+        Application.ScreenUpdating = True
+        
+        EmailIssues (inputSelection) 'Emails issues
+        MsgBox "Your issue has been recorded."
     End If
+
+End Sub
+
+Function EmailIssues(strComplaint As String) 'Receives a str from LogIssue() that emails issue to me (ben@hunterkelsey.com)
+
+Dim strTime As String
+Dim strPerson As String
+
+Dim olApp As Outlook.Application
+Set olApp = CreateObject("Outlook.Application")
+
+Dim olMail As Outlook.MailItem
+Set olMail = olApp.CreateItem(olMailItem)
+
+strTime = "Issue Logged at " & Now
+strPerson = "Issue logged by " & Application.UserName
+
+olMail.To = "ben@hunterkelsey.com"
+olMail.Subject = strTime
+olMail.Body = strComplaint & Chr(10) & Chr(10) & strPerson
+olMail.Send
+
+End Function
+
+Sub splitLegals() 'Separates the legal description depending on the size.
+
+Dim currentLegal As String
+Dim strA As String
+Dim strB As String
+Dim i As Integer
+Dim length As Integer
+
+Worksheets("DropdownInfo").Range("M48:N72").ClearContents
+
+For i = 1 To Range("NumberofProperties")
+    currentLegal = "Prop" & i & "Legal"
+    strA = "Prop" & i & "LegalA"
+    strB = "Prop" & i & "LegalB"
+    length = Len(Range(currentLegal))
     
-    If FSO.FolderExists(SpecialPath & "VBAProjectFiles") = True Then
-        FolderWithVBAProjectFiles = SpecialPath & "VBAProjectFiles"
+    Range(strA) = ""
+    Range(strB) = ""
+    
+    If length > 300 Then
+        Range(strA) = "See Exhibit A"
+        Range(strB) = Range(currentLegal)
     Else
-        FolderWithVBAProjectFiles = "Error"
+        Range(strA) = Range(currentLegal)
     End If
-    
-End Function
+Next i
 
-Function DeleteVBAModulesAndUserForms()
-        Dim VBProj As VBIDE.VBProject
-        Dim VBComp As VBIDE.VBComponent
-        
-        Set VBProj = ActiveWorkbook.VBProject
-        
-        For Each VBComp In VBProj.VBComponents
-            If VBComp.Type = vbext_ct_Document Then
-                'Thisworkbook or worksheet module
-                'We do nothing
-            Else
-                VBProj.VBComponents.Remove VBComp
-            End If
-        Next VBComp
-End Function
+End Sub
+
+
+
+
 
