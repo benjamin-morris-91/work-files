@@ -1,7 +1,11 @@
 Attribute VB_Name = "Save_Load_Subs"
 Option Explicit
 
-Sub LoadFromDatabase()
+Sub LoadFromDatabase() 'runs when user clicks the "Load Loan" button and also during the save phase.
+
+'**********************************************
+'Add some error handeling to cover if the match returns a N/A
+'**********************************************
 
     Dim Wb1 As Workbook                     'Loan Doc
     Dim Wb2 As Workbook                     'Database Doc
@@ -19,11 +23,8 @@ Sub LoadFromDatabase()
     copyDatabaseFile.Range("E1") = LoanDocDB.Range("LNPlusName") 'Copy from the LoanUI to the database file range E1.
     copyDatabaseFile.Range("F1") = Application.Match(copyDatabaseFile.Range("E1"), copyDatabaseFile.Range("B:B"), 0) 'Provides row to copy/replace
     
-    'copyDatabaseFile.Rows(copyDatabaseFile.Range("F1")).Copy 'This only copies the row searching for.
     copyDatabaseFile.Cells.Copy
     newDatabase.Range("A1").PasteSpecial xlPasteValues
-    'copyDatabaseFile.Range("D1:F1").Copy
-    'newDatabase.Range("D1:F1").PasteSpecial xlPasteValues
 
     Application.CutCopyMode = False
     Wb2.Close SaveChanges:=True
@@ -35,29 +36,23 @@ Sub LoadFromDatabase()
     
 End Sub
 
-Sub LoadToDatabase()
+Sub LoadToDatabase() 'Happens during the save phase
 
     Dim Wb1 As Workbook
     Dim Wb4 As Workbook
     Dim newDatabase As Worksheet
     Dim copyDatabaseFile As Worksheet
-    'Dim rowToDelete As Integer
     
     Set Wb1 = Workbooks.Open(loanDocFile) 'This is the LoanUI file
     Set newDatabase = Worksheets("NewDatabase")
     Set Wb4 = Workbooks.Open(databaseFile) 'This is the database file
     Set copyDatabaseFile = Worksheets("Sheet1")
     copyDatabaseFile.Range("F1") = newDatabase.Range("F1")
-    'rowToDelete = newDatabase.Range("F1")
 
     copyDatabaseFile.Rows(copyDatabaseFile.Range("F1")).ClearContents
-    'newDatabase.Range("A2", newDatabase.Range("A2").End(xlToRight)).Copy 'This works if there is only one row to copy from.
     newDatabase.Rows(newDatabase.Range("F1")).Copy
     copyDatabaseFile.Rows(copyDatabaseFile.Range("F1")).PasteSpecial xlPasteValues
     copyDatabaseFile.Range("A1").Select
-    'copyDatabaseFile.Range("A1").PasteSpecial xlPasteValues
-    'newDatabase.Cells.Copy
-    'copyDatabaseFile.Cells.ClearContents
     
     Wb4.Close SaveChanges:=True
     Set copyDatabaseFile = Nothing
@@ -112,9 +107,6 @@ Sub SaveLoan()
             LoanDocNDB.Rows(rowNumberToReplace).PasteSpecial
             
             Call LoadToDatabase
-            'MsgBox "Record overridden and saved."
-        'Else
-            'MsgBox "You did not override."
         End If
     Else 'No Duplicates so copies Range("AppInfo") to a new line in the NewDatabase sheet.
         LoanDocDB.Range("AppInfo").Copy
@@ -222,7 +214,7 @@ Sub GenerateForms()
     
     Call SaveLoan
     Call FKACheck
-    Call UpdateFlags
+    'Call UpdateFlags
     Call calcProcessingFee
     'Call LegalLoop 'Checks the length of the legal description before generating docs.
     If Range("LegalCriteria") = False Then
@@ -252,16 +244,19 @@ Sub GenerateForms()
     Worksheets("Sheet1").Activate
 
 '*****************************
-    Application.StatusBar = "Working... 0% Completed"
-    Call DoMailMergeDocs 'Mail merge of individual docs
-    Application.StatusBar = "Working... 50% Completed"
-    Call ConvertToPDF 'Converts individual docs to pdf
-    Application.StatusBar = "Working... 80% Completed"
+'    Application.StatusBar = "Working... 0% Completed"
+'    Call DoMailMergeDocs 'Mail merge of individual docs
+'    Application.StatusBar = "Working... 50% Completed"
+'    Call ConvertToPDF 'Converts individual docs to pdf
+'    Application.StatusBar = "Working... 80% Completed"
+    
 'Took out 7/8/19 against my better judgement. BM
 '    Call DoMailGFE ' Creates word doc and pdf
 '    Application.StatusBar = "Working... 80% Completed"
-    Call DoMailMergeCert ' Creates word doc and pdf
-    Application.StatusBar = "Finished!"
+
+
+'    Call DoMailMergeCert ' Creates word doc and pdf
+'    Application.StatusBar = "Finished!"
 '*****************************
     Range("Borrower1Name") = b1Name
     Range("Borrower2Name") = b2Name
@@ -405,7 +400,6 @@ currentDate = Now()
 currentMonth = Month(currentDate)
 
 str = FileDateTime(databaseFile) & " - " & Application.UserName
-'Set nextSpot = Worksheets("TrackChanges").Columns(currentMonth).End(xlDown).Offset(1)
 Set nextSpot = UpdateDatabaseFile.Columns(currentMonth).End(xlDown).Offset(1)
 nextSpot = str
 

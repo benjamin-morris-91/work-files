@@ -61,17 +61,6 @@ Range("RescindDate").Value2 = closingDate
 
 Call ageCalculation 'to update Over65 on all borrowers then this function is called.
 
-'moved to its own method
-'If Range("Borrower1FKA") <> 0 Then 'Adds the borrowers FKA to their name if needed.
-'    Range("Borrower1Name") = Range("Borrower1Name") & " FKA " & Range("Borrower1FKA")
-'End If
-'If Range("Borrower2FKA") <> 0 Then
-'    Range("Borrower2Name") = Range("Borrower2Name") & " FKA " & Range("Borrower2FKA")
-'End If
-'If Range("Borrower3FKA") <> 0 Then
-'    Range("Borrower3Name") = Range("Borrower3Name") & " FKA " & Range("Borrower3FKA")
-'End If
-
 End Sub
 
 Sub calculateTotalAmountDue() 'Calculates the total tax amount due per property.
@@ -91,12 +80,12 @@ For i = 1 To Range("NumberofProperties")
         nextProp = "Prop" & i & "AmountDue" & j
         totalProp = totalProp + Range(nextProp).Value
     Next j
+    
     Range(nextTotal) = totalProp
-    'Updates the totalTax variable to keep a running tab for the TotalTaxAmounts field
-    totalTax = totalTax + totalProp
-    'resets totalProp so next property doesn't include it.
-    totalProp = 0
+    totalTax = totalTax + totalProp 'Updates the totalTax variable to keep a running tab for the TotalTaxAmounts field
+    totalProp = 0 'resets totalProp so next property doesn't include it.
 Next i
+
 Range("TotalTaxAmount") = totalTax
 
 End Sub
@@ -258,6 +247,7 @@ test1 = Application.Index(NumberArray1, Application.Match(Range("LoanOfficer").V
 Range("NMLS").Value = test1
 
 End Sub
+
 Sub ClearBorrowers()
 
 Dim FieldsToClear As Variant
@@ -279,6 +269,7 @@ For Each x In FieldsToClear
 Next x
 
 End Sub
+
 Sub CheckClear() 'Msg box confirming user wants to clear the form.
 
 If MsgBox("Do you want to clear everything?", vbYesNo) = vbNo Then
@@ -298,7 +289,7 @@ Dim Rg1 As Range
     FieldsToClear = Array("B1Info", "B2Info", "B3Info", "LoanInfo", "LendingInfo", "TLTAInfo", _
         "Prop1Info", "Prop2Info", "Prop4Info", "Prop5Info", "Prop6Info", "Prop7Info", "Prop8Info", "Prop9Info", _
         "Prop10Info", "Prop11Info", "Prop12Info", "Prop13Info", "Prop14Info", "Prop15Info", "Prop16Info", "Prop17Info", "Prop18Info", _
-        "Prop19Info", "Prop20Info", "Prop21Info", "Prop22Info", "Prop23Info", "Prop24Info", "Prop25Info", "MiscInfo", "AmountTotalsInfo", "Notes")
+        "Prop19Info", "Prop20Info", "Prop21Info", "Prop22Info", "Prop23Info", "Prop24Info", "Prop25Info", "MiscInfo", "AmountTotalsInfo", "Notes", "firstMonthlyPayment")
 
 Application.Calculation = xlManual
 Application.ScreenUpdating = False
@@ -356,7 +347,7 @@ Range("CourtCost") = 0
 Range("AbstractFees") = 0
 Range("OtherFees") = 0
 
-Range("Homestead") = "N"
+Range("HomesteadExemption") = "N"
 Range("AgeDeferral") = "N"
 Range("AppliedDisability") = "N"
 Range("DisabilityDeferral") = "N"

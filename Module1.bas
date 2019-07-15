@@ -32,19 +32,19 @@ End Sub
 
 Sub AddB1FKA()
 
-Range("CombinedB1FKA") = Range("Borrower1Name") & " fka " & Range("Borrower1FKA")
+Range("CombinedB1FKA") = Range("Borrower1Name") & " FKA " & Range("Borrower1FKA")
 
 End Sub
 
 Sub AddB2FKA()
 
-Range("CombinedB2FKA") = Range("Borrower2Name") & " fka " & Range("Borrower2FKA")
+Range("CombinedB2FKA") = Range("Borrower2Name") & " FKA " & Range("Borrower2FKA")
 
 End Sub
 
 Sub AddB3FKA()
 
-Range("CombinedB3FKA") = Range("Borrower3Name") & " fka " & Range("Borrower3FKA")
+Range("CombinedB3FKA") = Range("Borrower3Name") & " FKA " & Range("Borrower3FKA")
 
 End Sub
 
@@ -108,11 +108,6 @@ Dim strB As String
 inputSelection = InputBox("Please enter the problem you encountered.")
     If inputSelection <> "" Then 'Process of adding the entry to the log
     
-    ' ********************
-    ' Only emailing issue. Currently error in sending it to database file. Keeps overwritting the same cell...
-    ' ********************
-    
-    
         Application.ScreenUpdating = False
         Call assignFileNames
         Application.ScreenUpdating = False
@@ -168,7 +163,9 @@ Dim strA As String
 Dim strB As String
 Dim i As Integer
 Dim length As Integer
+Dim numOfBor As Integer
 
+numOfBor = Range("NumberOfBorrowers")
 Worksheets("DropdownInfo").Range("M48:N72").ClearContents
 
 For i = 1 To Range("NumberofProperties")
@@ -180,17 +177,21 @@ For i = 1 To Range("NumberofProperties")
     Range(strA) = ""
     Range(strB) = ""
     
-    If length > 300 Then
-        Range(strA) = "See Exhibit A"
-        Range(strB) = Range(currentLegal)
-    Else
-        Range(strA) = Range(currentLegal)
+    If numOfBor = 1 Then
+        If length > 600 Then
+            Range(strA) = "See Exhibit A"
+            Range(strB) = Range(currentLegal)
+        Else
+            Range(strA) = Range(currentLegal)
+        End If
+    Else 'number of borrower is greater than 1
+        If length > 280 Then
+            Range(strA) = "See Exhibit A"
+            Range(strB) = Range(currentLegal)
+        Else
+            Range(strA) = Range(currentLegal)
+        End If
     End If
 Next i
 
 End Sub
-
-
-
-
-

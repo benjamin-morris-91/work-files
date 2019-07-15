@@ -26,3 +26,9 @@ Sub ShowInstructionBox()
 DisplayInstructions.Show
 
 End Sub
+
+Sub ChangeUser()
+
+ChangeUserColor.Show
+
+End Sub

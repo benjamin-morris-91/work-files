@@ -34,7 +34,6 @@ Range("LNToLoad") = Load_Loan.LoanToLoad
 
 Unload Load_Loan
 
-'Call LoadFromDatabase Already does this before now?
 Call LoadLoan
 
 Application.ScreenUpdating = True

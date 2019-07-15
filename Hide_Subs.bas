@@ -21,7 +21,7 @@ Call prefillBorrowerInfo
 End Sub
 Sub updateHomeStead()
 
-If Range("HomeStead") = "Y" Then
+If Range("LoanType") = "Homestead - New Loan" Then
     Range("LoanTypeChoice") = "Yes"
 Else
     Range("LoanTypeChoice") = "No"
