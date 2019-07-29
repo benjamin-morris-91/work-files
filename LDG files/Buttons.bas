@@ -31,10 +31,17 @@ End If
 
 If validCheck = True Then
     j = inputSelection 'Necessary to remove any potential leading zeros
-    BorrowerAddress = "Borrower" & j & "AddressStreet"
-    BorrowerCity = "Borrower" & j & "AddressCity"
-    BorrowerState = "Borrower" & j & "AddressState"
-    BorrowerZIP = "Borrower" & j & "AddressZIP"
+    If j = 1 Then
+        BorrowerAddress = "Borrower1PAddress"
+        BorrowerCity = "Borrower" & j & "AddressCity"
+        BorrowerState = "Borrower" & j & "AddressState"
+        BorrowerZIP = "Borrower" & j & "AddressZIP"
+    Else
+        BorrowerAddress = "Borrower" & j & "AddressStreet"
+        BorrowerCity = "Borrower" & j & "AddressCity"
+        BorrowerState = "Borrower" & j & "AddressState"
+        BorrowerZIP = "Borrower" & j & "AddressZIP"
+    End If
 
     For i = 1 To Range("NumberOfProperties")
         strAddress = "Prop" & i & "Address"

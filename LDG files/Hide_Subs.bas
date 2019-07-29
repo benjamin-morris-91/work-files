@@ -29,9 +29,9 @@ End If
 
 End Sub
 Sub IndividualLoan()
-    Range("Borrower1MaritalStatus") = ""
-    Range("Borrower2MaritalStatus") = ""
-    Range("Borrower3MaritalStatus") = ""
+    Range("Borrower1Marital") = ""
+    Range("Borrower2Marital") = ""
+    Range("Borrower3Marital") = ""
     Range("Borrower1DOB") = ""
     Range("Borrower2DOB") = ""
     Range("Borrower3DOB") = ""
@@ -39,9 +39,9 @@ Sub IndividualLoan()
 End Sub
 
 Sub CorporateLoan()
-    Range("Borrower1MaritalStatus") = "N/A"
-    Range("Borrower2MaritalStatus") = "N/A"
-    Range("Borrower3MaritalStatus") = "N/A"
+    Range("Borrower1Marital") = "N/A"
+    Range("Borrower2Marital") = "N/A"
+    Range("Borrower3Marital") = "N/A"
     Range("Borrower1DOB") = "N/A"
     Range("Borrower2DOB") = "N/A"
     Range("Borrower3DOB") = "N/A"
@@ -49,9 +49,9 @@ Sub CorporateLoan()
 End Sub
 
 Sub LLCLoan()
-    Range("Borrower1MaritalStatus") = "N/A"
-    Range("Borrower2MaritalStatus") = "N/A"
-    Range("Borrower3MaritalStatus") = "N/A"
+    Range("Borrower1Marital") = "N/A"
+    Range("Borrower2Marital") = "N/A"
+    Range("Borrower3Marital") = "N/A"
     Range("Borrower1DOB") = "N/A"
     Range("Borrower2DOB") = "N/A"
     Range("Borrower3DOB") = "N/A"

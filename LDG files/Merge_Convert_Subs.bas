@@ -266,7 +266,7 @@ Dim fileNameForCert As String
 Dim filePath As String
 Dim updatedFileName As String
 
-fileNameForGFE = Range("LoanNumber") & " GFE.docx" 'Sets the name of the file as the loan number + name
+fileNameForGFE = Range("LoanNumber") & " Disclosures.docx" 'Sets the name of the file as the loan number + name
 
     On Error Resume Next
         If wd Is Nothing Then
@@ -310,9 +310,9 @@ fileNameForGFE = Range("LoanNumber") & " GFE.docx" 'Sets the name of the file as
 
     Set wdocSource = Nothing
 
-fileNameForCert = Range("LoanNumber") & " GFE.docx"
+fileNameForCert = Range("LoanNumber") & " Disclosures.docx"
 filePath = saveLocation & fileNameForCert
-updatedFileName = Range("LoanNumber") & " GFE"
+updatedFileName = Range("LoanNumber") & " Disclosures"
 
     wd.Documents.Open filePath 'File path that will be opened and converted to PDF
     wd.Visible = False

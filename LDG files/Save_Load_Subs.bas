@@ -244,19 +244,19 @@ Sub GenerateForms()
     Worksheets("Sheet1").Activate
 
 '*****************************
-'    Application.StatusBar = "Working... 0% Completed"
-'    Call DoMailMergeDocs 'Mail merge of individual docs
-'    Application.StatusBar = "Working... 50% Completed"
-'    Call ConvertToPDF 'Converts individual docs to pdf
-'    Application.StatusBar = "Working... 80% Completed"
+    Application.StatusBar = "Working... 0% Completed"
+    Call DoMailMergeDocs 'Mail merge of individual docs
+    Application.StatusBar = "Working... 50% Completed"
+    Call ConvertToPDF 'Converts individual docs to pdf
+    Application.StatusBar = "Working... 80% Completed"
     
 'Took out 7/8/19 against my better judgement. BM
 '    Call DoMailGFE ' Creates word doc and pdf
 '    Application.StatusBar = "Working... 80% Completed"
 
 
-'    Call DoMailMergeCert ' Creates word doc and pdf
-'    Application.StatusBar = "Finished!"
+    Call DoMailMergeCert ' Creates word doc and pdf
+    Application.StatusBar = "Finished!"
 '*****************************
     Range("Borrower1Name") = b1Name
     Range("Borrower2Name") = b2Name

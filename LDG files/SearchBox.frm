@@ -15,8 +15,6 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-
-
 Private Sub cmdLoadSelected_Click()
 
 Dim RowNum As Long
@@ -58,8 +56,8 @@ Worksheets("NewDatabase").Activate
 Do Until Cells(RowNum, 1).Value = ""
     If InStr(1, Cells(RowNum, 1).Value, TextBox1.Value, vbTextCompare) > 0 Then
         Worksheets("TempDatabase").Cells(SearchRow, 1).Value = Cells(RowNum, 1).Value
-        Worksheets("TempDatabase").Cells(SearchRow, 2).Value = Cells(RowNum, 68).Value
-        Worksheets("TempDatabase").Cells(SearchRow, 3).Value = Cells(RowNum, 56).Value
+        Worksheets("TempDatabase").Cells(SearchRow, 2).Value = Cells(RowNum, 67).Value
+        Worksheets("TempDatabase").Cells(SearchRow, 3).Value = Cells(RowNum, 52).Value
         SearchRow = SearchRow + 1
     End If
     RowNum = RowNum + 1
@@ -90,11 +88,11 @@ SearchRow = 2
 Worksheets("TempDatabase").Range("A2:H1000").ClearContents
 Worksheets("NewDatabase").Activate
 
-Do Until Cells(RowNum, 68).Value = ""
-    If InStr(1, Cells(RowNum, 68).Value, TextBox1.Value, vbTextCompare) > 0 Then
-        Worksheets("TempDatabase").Cells(SearchRow, 6).Value = Cells(RowNum, 68).Value
-        Worksheets("TempDatabase").Cells(SearchRow, 7).Value = Cells(RowNum, 1).Value
-        Worksheets("TempDatabase").Cells(SearchRow, 8).Value = Cells(RowNum, 56).Value
+Do Until Cells(RowNum, 67).Value = ""   'Searches column 67, which is B1Name currently.
+    If InStr(1, Cells(RowNum, 67).Value, TextBox1.Value, vbTextCompare) > 0 Then
+        Worksheets("TempDatabase").Cells(SearchRow, 6).Value = Cells(RowNum, 67).Value  'This correlates to B1Name
+        Worksheets("TempDatabase").Cells(SearchRow, 7).Value = Cells(RowNum, 1).Value   'This correlates to Loan Number
+        Worksheets("TempDatabase").Cells(SearchRow, 8).Value = Cells(RowNum, 52).Value  'This correlates to Application Date
         SearchRow = SearchRow + 1
     End If
     RowNum = RowNum + 1
@@ -110,11 +108,6 @@ Worksheets("TempDatabase").Range("J1").Value = 2
 
 listResults.RowSource = "SearchResults2"
 Worksheets("Sheet1").Activate
-
-End Sub
-
-
-Private Sub listResults_Click()
 
 End Sub
 
