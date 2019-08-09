@@ -71,6 +71,7 @@ Range("PathToCert") = str & "IndividualCertifiedStatementTTT.docx"
 Range("PathToGFE") = str & "DisclosuresMergeForm.docx"
 Range("PathToDatabase") = str & "Loan Database.xlsx"
 Range("PathToMergeFields") = str & "MergeFields.csv"
+Range("PathToAppTemplate") = str & "HK Application Template.docx"
 
 Worksheets("Database").Range("G24").Value = "Zeus Drive"
 
@@ -87,6 +88,7 @@ Range("PathToCert") = str & "IndividualCertifiedStatementTTT.docx"
 Range("PathToGFE") = str & "DisclosuresMergeForm.docx"
 Range("PathToDatabase") = str & "Loan Database.xlsx"
 Range("PathToMergeFields") = str & "MergeFields.csv"
+Range("PathToAppTemplate") = str & "HK Application Template.docx"
 
 Worksheets("Database").Range("G24").Value = "Desktop Folder"
 
