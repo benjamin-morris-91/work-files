@@ -14,6 +14,7 @@ Global LoanDocWB As Workbook
 Global LoanDocSht1 As Worksheet
 Global LoanDocDB As Worksheet
 Global LoanDocNDB As Worksheet
+Global appTemplate As String
 
 
 Sub assignFileNames() 'Call UserFilePath 'Updates the correct location of the loan docs file
@@ -26,6 +27,7 @@ GFEMergeForm = Range("PathToGFE")
 corporateMailMergeFile = Range("PathToCorporateMailMerge")
 saveLocation = Range("PathToSaveLocation")
 individualMailMergeCert = Range("PathToCert")
+appTemplate = Range("PathToAppTemplate")
 
 Set LoanDocWB = Workbooks.Open(loanDocFile)
 'Set LoanDocSht1 = LoanDocWB.Sheets("Sheet1")
