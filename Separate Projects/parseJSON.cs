@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.IO;
 
-
+//Needs a file named benTest1.txt on the desktop to work.
 namespace SandBox
 {
 	class Program
