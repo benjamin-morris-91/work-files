@@ -3,6 +3,8 @@ using System.Linq;
 using System.IO;
 
 //Needs a file named benTest1.txt on the desktop to work.
+//Think of best way to automate this process and to speed up searching.
+
 namespace SandBox
 {
 	class Program
